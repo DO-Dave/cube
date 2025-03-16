@@ -1,27 +1,24 @@
+// include Libs
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <vector>
 #include <cstdlib> // For std::rand() and std::srand()
 #include <ctime>   // For std::time()
-#include "Cube.cpp"
+
+// Inlcude Files
+#include "Point.cpp"
+#include "Object.cpp"
+
 
 const int SCREEN_WIDTH = 900;
 const int SCREEN_HEIGHT = 900;
 const int FPS = 60;
-const int FRAME_DELAY = 0* (1000 / FPS);
+const int FRAME_DELAY = (1000 / FPS);
 
-struct Coordinates
-{
-  int x;
-  int y;
-};
-
-// Correct function declaration
-void checkEdges(Coordinates& pos);
 
 // Function to generate a random float between min and max
 float randomFloat(float min, float max) {
-  return min + static_cast<float>(std::rand()) / (static_cast<float>(2147483647 / (max - min)));
+  return min + static_cast<float>(std::rand()) / (2147483647.0 / (max - min));
 }
 
 int main(int argc, char* argv[])
@@ -59,21 +56,28 @@ int main(int argc, char* argv[])
     SDL_Quit();
     return 1;
   }
+  /*
+   // Initial SDL_Rect
+   SDL_Rect r1 = { 500, 500, 50, 50 };
+   const int NumberOjObjects = 50;
+   Object arr[NumberOjObjects]; // Array of 5 objects
+   // Initialize different velocity and acceleration for each object
+   for (int i = 0; i < NumberOjObjects; ++i)
+   {
+     // Generate random velocity and acceleration
+     std::vector<float> velocity = { randomFloat(-5.0f, 5.0f), randomFloat(-5.0f, 5.0f) };
+     std::vector<float> acceleration = {0.0f, 1.0f};//{ randomFloat(-1.0f, 1.0f), randomFloat(-1.0f, 1.0f) };
+     SDL_Rect r1 = { rand() % (SCREEN_WIDTH - 50), rand() % (SCREEN_HEIGHT - 50), 10, 10 };
+     // Initialize each Object with different velocity and acceleration
+     arr[i] = Object(r1, velocity, acceleration);
+   }
+     */
+  std::vector<float> p = { 400.0f, 400.0f };
+  std::vector<float> v = { 1.0f, -10.0f };
+  std::vector<float> a = { -0.0f, -0.0f };
 
-  // Initial SDL_Rect
-  SDL_Rect r1 = { 500, 500, 50, 50 };
-  const int NumberOjObjects = 50;
-  Object arr[NumberOjObjects]; // Array of 5 objects
-  // Initialize different velocity and acceleration for each object
-  for (int i = 0; i < NumberOjObjects; ++i)
-  {
-    // Generate random velocity and acceleration
-    std::vector<float> velocity = { randomFloat(-5.0f, 5.0f), randomFloat(-5.0f, 5.0f) };
-    std::vector<float> acceleration = {0.0f, 1.0f};//{ randomFloat(-1.0f, 1.0f), randomFloat(-1.0f, 1.0f) };
-    SDL_Rect r1 = { rand() % (SCREEN_WIDTH - 50), rand() % (SCREEN_HEIGHT - 50), 10, 10 };
-    // Initialize each Object with different velocity and acceleration
-    arr[i] = Object(r1, velocity, acceleration);
-  }
+  Point p1(p, v, a);
+
 
   bool running = true;
   SDL_Event event;
@@ -95,13 +99,17 @@ int main(int argc, char* argv[])
     // Set the background color (e.g., dark gray) and clear the screen
     SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
     SDL_RenderClear(renderer);
-
+    /*
     for (auto& obj : arr)
     {
       obj.rectCollisions(arr, NumberOjObjects);
       obj.move(SCREEN_HEIGHT, SCREEN_WIDTH);
       obj.renderObject(renderer);
     }
+      */
+    p1.move(SCREEN_HEIGHT, SCREEN_WIDTH);
+    p1.renderPoint(renderer);
+
 
     // Present the current frame
     SDL_RenderPresent(renderer);
