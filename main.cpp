@@ -72,15 +72,35 @@ int main(int argc, char* argv[])
      arr[i] = Object(r1, velocity, acceleration);
    }
      */
-  std::vector<float> p = { 400.0f, 400.0f };
-  std::vector<float> v = { 1.0f, -10.0f };
-  std::vector<float> a = { -0.0f, -0.0f };
+  std::vector<float> p;
+  std::vector<float> v;// = { 1.0f, -10.0f };
+  std::vector<float> a;// = { -0.0f, -0.0f };
+  Point arr[NUMBEROFPOINTS];
 
-  Point p1(p, v, a);
+  for (int i = 0; i < NUMBEROFPOINTS; ++i)
+  {
+    p = { static_cast<float>(rand() % (SCREEN_WIDTH - 1)),
+      static_cast<float>(rand() % (SCREEN_HEIGHT - 1)) };
+    v = { randomFloat(-5.0f, 5.0f), randomFloat(-5.0f, 5.0f) };
+    a = {0.0f, 0.3f};//{ randomFloat(-5.0f, 5.0f), randomFloat(-5.0f, 5.0f) };
+    arr[i] = Point(p, v, a);
+  }
+
+  for (int i = 0; i < NUMBEROFPOINTS; ++i)
+  {
+    std::cout << "Point number : " << i;
+    for (int j = 0; j < 2; ++j)
+    {
+      std::cout << " a: " << arr[i].acceleration[j] << " v: " << arr[i].velocity[j] << " pos: " << j << " " << arr[i].pos[j];
+    }
+    std::cout << std::endl;
+  }
 
 
   bool running = true;
   SDL_Event event;
+
+  RGBA bgcolor = { 27, 27, 27, 255 };
 
   while (running)
   {
@@ -97,7 +117,7 @@ int main(int argc, char* argv[])
     }
 
     // Set the background color (e.g., dark gray) and clear the screen
-    SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
+    SDL_SetRenderDrawColor(renderer, bgcolor.r, bgcolor.g, bgcolor.b, bgcolor.a);
     SDL_RenderClear(renderer);
     /*
     for (auto& obj : arr)
@@ -107,9 +127,12 @@ int main(int argc, char* argv[])
       obj.renderObject(renderer);
     }
       */
-    p1.move(SCREEN_HEIGHT, SCREEN_WIDTH);
-    p1.renderPoint(renderer);
-
+    for (int i = 0; i < NUMBEROFPOINTS; ++i)
+    {
+      arr[i].move(SCREEN_HEIGHT, SCREEN_WIDTH);
+      arr[i].collision(arr, NUMBEROFPOINTS);
+      arr[i].renderPoint(renderer);
+    }
 
     // Present the current frame
     SDL_RenderPresent(renderer);
