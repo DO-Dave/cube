@@ -8,12 +8,10 @@
 // Inlcude Files
 #include "Point.cpp"
 #include "Object.cpp"
+#include "consts.h"
 
 
-const int SCREEN_WIDTH = 900;
-const int SCREEN_HEIGHT = 900;
-const int FPS = 60;
-const int FRAME_DELAY = (1000 / FPS);
+
 
 
 // Function to generate a random float between min and max
@@ -86,17 +84,6 @@ int main(int argc, char* argv[])
     arr[i] = Point(p, v, a);
   }
 
-  for (int i = 0; i < NUMBEROFPOINTS; ++i)
-  {
-    std::cout << "Point number : " << i;
-    for (int j = 0; j < 2; ++j)
-    {
-      std::cout << " a: " << arr[i].acceleration[j] << " v: " << arr[i].velocity[j] << " pos: " << j << " " << arr[i].pos[j];
-    }
-    std::cout << std::endl;
-  }
-
-
   bool running = true;
   SDL_Event event;
 
@@ -129,8 +116,8 @@ int main(int argc, char* argv[])
       */
     for (int i = 0; i < NUMBEROFPOINTS; ++i)
     {
-      arr[i].collision(arr, NUMBEROFPOINTS);
-      arr[i].applyGravity(arr, NUMBEROFPOINTS);
+      arr[i].collision();
+      //arr[i].applyGravity();
       arr[i].move(SCREEN_HEIGHT, SCREEN_WIDTH);
       arr[i].renderPoint(renderer);
     }
