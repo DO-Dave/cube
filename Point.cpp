@@ -68,7 +68,7 @@ public:
     {
       for (int index2 = index + 1; index2 < size; ++index2)
       {
-        // Check if the points are in the same cell
+        // TODO look up a better way of partitioning space so that i can run more particles
         if (pointArray[index].cellID == pointArray[index2].cellID)
         {
           //std::cout << "we are in the same cell" << std::endl;
