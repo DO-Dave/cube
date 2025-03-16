@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
     p = { static_cast<float>(rand() % (SCREEN_WIDTH - 1)),
       static_cast<float>(rand() % (SCREEN_HEIGHT - 1)) };
     v = { randomFloat(-5.0f, 5.0f), randomFloat(-5.0f, 5.0f) };
-    a = {0.0f, 0.3f};//{ randomFloat(-5.0f, 5.0f), randomFloat(-5.0f, 5.0f) };
+    a = { 0.0f, 0.5f };//{ randomFloat(-5.0f, 5.0f), randomFloat(-5.0f, 5.0f) };
     arr[i] = Point(p, v, a);
   }
 
@@ -129,8 +129,9 @@ int main(int argc, char* argv[])
       */
     for (int i = 0; i < NUMBEROFPOINTS; ++i)
     {
-      arr[i].move(SCREEN_HEIGHT, SCREEN_WIDTH);
       arr[i].collision(arr, NUMBEROFPOINTS);
+      arr[i].applyGravity(arr, NUMBEROFPOINTS);
+      arr[i].move(SCREEN_HEIGHT, SCREEN_WIDTH);
       arr[i].renderPoint(renderer);
     }
 
